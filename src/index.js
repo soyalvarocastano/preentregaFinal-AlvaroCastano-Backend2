@@ -11,10 +11,12 @@ import sessionRouter from './routes/sessions.routes.js'
 import productRouter from './routes/products.routes.js'
 import cartRouter from './routes/carts.routes.js'
 import mongoose from 'mongoose'
+import cors from 'cors'
 
 const app = express()
 const PORT = 8080
 const hbs = create()
+app.use(cors())
 
 //const fileStorage = new FileStore(session)
 app.use(express.json())

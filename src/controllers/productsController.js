@@ -3,16 +3,24 @@ import productModel from "../models/product.js";
 export const getProducts = async(req,res) => {
     try {
         const {limit, page, metFilter, filter, metOrder, ord} = req.query
-      
+        console.log(limit);
+        
         const pag = page !== undefined ? page : 1
-        const limi = limit !== undefined ? limit : 10
+        const limi = limit !== undefined || limit !== null ? limit : 10
                                             //status: "true"
         const filQuery = metFilter !== undefined ? {[metFilter]: filter} : {}
         const ordQuery = metOrder !== undefined ? {metOrder: ord} : {}
 
-        const prods = await productModel.paginate(filQuery, {limit: limi, page: pag, ordQuery})
+        const prods = await productModel.paginate(filQuery, {limit: limi, page: pag, ordQuery, lean: true})
         console.log(prods);
 
+        prods.pageNumbers = Array.from({length: prods.totalPages}, (_, i) => ({
+            number: i + 1,
+            isCurrent: i + 1 === prods.page
+        }))
+
+        console.log(prods);
+        
         res.status(200).render('templates/home', {prods})
         
     } catch(e) {
@@ -37,9 +45,9 @@ export const createProduct = async(req,res) => {
     try {
         const product = req.body
         const rta = await productModel.create(product)
-        res.status(201).redirect('templates/home', {rta})
+        res.status(201).send("Producto creado")
     }catch(e) {
-        res.status(500).render('templates/error', {e})
+        res.status(500).send(e)
     }
 }
 
