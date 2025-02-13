@@ -3,6 +3,7 @@ import { generateToken } from "../utils/jwt.js"
 export const login = async (req,res) => {
     try {
         if(!req.user) {
+            
             return res.status(401).send("Usuario o contraseña no validos")
         }
 
@@ -19,6 +20,7 @@ export const login = async (req,res) => {
             secure: false, //Evitar errores por https
             maxAge: 3600000 //Una hora
         })
+        console.log(1,req.user);
 
         res.status(200).redirect('/')
     }catch(e) {
@@ -29,16 +31,15 @@ export const login = async (req,res) => {
 
 export const register = async (req,res) => {
     try {
-        console.log(req.user);
-        if(!req.user) { //Consulto si en la sesion se encuentra mi usuario
-            return res.status(400).send("El mail ya se encuentra registrado")
-        } 
-        return res.status(201).send("Usuario creado correctamente")
-    }catch(e) {
+        if (!req.user) { // Si el usuario no fue creado, significa que ya existe
+            return res.status(400).send("El mail ya se encuentra registrado");
+        }
+        // Aquí puedes redirigir al login o mostrar un mensaje de éxito
+        return res.status(201).redirect('/login');
+    } catch (e) {
         console.log(e);
-        res.status(500).send("Error al registrar usuario")
+        res.status(500).send(`Error al registrar usuario: ${e.message}`);
     }
-    
 }
 
 export const viewRegister = (req,res) => {

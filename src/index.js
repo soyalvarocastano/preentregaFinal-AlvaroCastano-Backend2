@@ -36,7 +36,7 @@ app.use(session({
 }))
 
 mongoose.connect("mongodb+srv://alvarocastano:XdVZ6ES6Jb2VshLY@cluster0.8rrfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-.then(() => console.log("DB is connected"))
+.then((e) => console.log("DB is connected"))
 .catch((e) => console.log("Error al conectarme a DB:", e))
 
 initalizatePassport()
@@ -51,6 +51,7 @@ app.use('/public', express.static(__dirname + '/public')) //Concateno rutas
 app.use('/api/sessions', sessionRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
+
 
 app.get('/', (req,res) => {
     res.status(200).send("Hola desde Inicio")

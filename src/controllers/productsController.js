@@ -21,7 +21,7 @@ export const getProducts = async(req,res) => {
 
         console.log(prods);
         
-        res.status(200).render('templates/home', {prods})
+        res.status(200).render('templates/product', {prods})
         
     } catch(e) {
         res.status(500).render('templates/error', {e})

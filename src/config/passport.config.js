@@ -68,6 +68,7 @@ const initalizatePassport = () => {
     passport.use('login', new localStrategy({usernameField:'email'}, async (username, password, done) => {
         try {
             const user = await userModel.findOne({email: username})
+            
             if(user && validatePassword(password, user.password)) {
                 return done(null, user)
             } else {

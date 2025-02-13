@@ -6,8 +6,8 @@ import { authorization } from "../config/middlewares.js";
 const sessionRouter = Router()
 
 
-sessionRouter.get('/viewlogin', viewLogin)
-sessionRouter.get('/viewregister', viewRegister)
+sessionRouter.get('/login', viewLogin)
+sessionRouter.get('/register', viewRegister)
 sessionRouter.post('/login', passport.authenticate('login'), login)
 sessionRouter.post('/register', passport.authenticate('register'), register)
 sessionRouter.get('/github', passport.authenticate('github', {scope:['user:email']}), async (req,res) => {})
