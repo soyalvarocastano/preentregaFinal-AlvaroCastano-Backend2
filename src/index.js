@@ -7,9 +7,7 @@ import {create} from 'express-handlebars'
 import passport from 'passport'
 import initalizatePassport from './config/passport.config.js'
 import MongoStore from 'connect-mongo'
-import sessionRouter from './routes/sessions.routes.js'
-import productRouter from './routes/products.routes.js'
-import cartRouter from './routes/carts.routes.js'
+import indexRouter from './routes/index.routes.js'
 import mongoose from 'mongoose'
 import cors from 'cors'
 
@@ -28,7 +26,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://alvarocastano:XdVZ6ES6Jb2VshLY@cluster0.8rrfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
         mongoOptions: {},
-        ttl: 15
+        ttl: 15000000000
     }),
     secret: 'SessionSecret',
     resave: true,
@@ -47,15 +45,10 @@ app.set('view engine', 'handlebars')
 app.set('views', path.join(__dirname, 'views')) //Concateno evitando erroes de / o \
 
 //Rutas
-app.use('/public', express.static(__dirname + '/public')) //Concateno rutas
-app.use('/api/sessions', sessionRouter)
-app.use('/api/products', productRouter)
-app.use('/api/carts', cartRouter)
+app.use(express.static(path.join(__dirname, "public"))) //Concateno rutas
+app.use('/', indexRouter)
 
 
-app.get('/', (req,res) => {
-    res.status(200).send("Hola desde Inicio")
-})
 app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })

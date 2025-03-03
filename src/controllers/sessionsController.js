@@ -1,9 +1,9 @@
+
 import { generateToken } from "../utils/jwt.js"
 
 export const login = async (req,res) => {
     try {
         if(!req.user) {
-            
             return res.status(401).send("Usuario o contraseña no validos")
         }
 
@@ -14,40 +14,45 @@ export const login = async (req,res) => {
             first_name: req.user.first_name
         } 
         
-        //Previo a redireccionar, envio la cookie
-        res.cookie('coderCookie', token, {
+
+        res.status(200).cookie('coderCookie', token, {
             httpOnly: true,
             secure: false, //Evitar errores por https
             maxAge: 3600000 //Una hora
-        })
-        console.log(1,req.user);
-
-        res.status(200).redirect('/')
+        }).send({message: "Usuario logueado correctamente"})
     }catch(e) {
         console.log(e); 
-        res.status(500).send("Error al loguear usuario")
+        res.status(500).send({message: "Error al loguear usuario"})
     }     
 }
 
 export const register = async (req,res) => {
     try {
-        if (!req.user) { // Si el usuario no fue creado, significa que ya existe
-            return res.status(400).send("El mail ya se encuentra registrado");
-        }
-        // Aquí puedes redirigir al login o mostrar un mensaje de éxito
-        return res.status(201).redirect('/login');
-    } catch (e) {
+        if(!req.user) { //Consulto si en la sesion se encuentra mi usuario
+            return res.status(400).send("El mail ya se encuentra registrado")
+        } 
+        return res.status(201).send({message: "Usuario creado correctamente"})
+    }catch(e) {
         console.log(e);
-        res.status(500).send(`Error al registrar usuario: ${e.message}`);
+        res.status(500).send({message: "Error al registrar usuario"})
     }
+    
 }
 
 export const viewRegister = (req,res) => {
-    res.status(200).render('templates/register', {})
+    res.status(200).render('templates/register', {
+        title: "Registro de Usuario",
+        url_js: "/js/register.js",
+        url_css: "/css/register.css"
+    })
 }
 
 export const viewLogin = (req,res) => {
-    res.status(200).render('templates/login', {})
+    res.status(200).render('templates/login', {
+        title: "Inicio de Sesion de Usuario",
+        url_js: "/js/login.js",
+        url_css: "/css/login.css"
+    })
 }
 
 export const githubLogin = (req,res) => {
@@ -56,9 +61,18 @@ export const githubLogin = (req,res) => {
             email: req.user.email,
             first_name: req.user.first_name
         } 
-        res.status(200).redirect("/")
+        const token = generateToken(req.user)
+        res.status(200).cookie('coderCookie', token, {
+            httpOnly: true,
+            secure: false, //Evitar errores por https
+            maxAge: 3600000 //Una hora
+        }).redirect("/api/products")
     }catch(e) {
         console.log(e); 
         res.status(500).send("Error al loguear usuario")
     }  
 }
+
+
+
+

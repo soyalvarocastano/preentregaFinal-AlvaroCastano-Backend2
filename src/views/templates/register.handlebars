@@ -1,13 +1,33 @@
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Registro</h2>
-        <form action="/api/sessions/register" method="POST" class="space-y-4">
-            <input type="text" name="first_name" placeholder="Nombre" class="w-full p-2 border rounded">
-            <input type="text" name="last_name" placeholder="Apellido" class="w-full p-2 border rounded">
-            <input type="email" name="email" placeholder="Correo electrónico" class="w-full p-2 border rounded">
-            <input type="password" name="password" placeholder="Contraseña" class="w-full p-2 border rounded">
-            <input type="number" name="age" placeholder="Edad" class="w-full p-2 border rounded">
-            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Registrarse</button>
-        </form>
+<div class="container d-flex justify-content-center align-items-center vh-120">
+    <div class="card p-4 shadow-sm cardRegister">
+        <h2 class="text-center">Register</h2>
+            <form action="/api/sessions/register" id="registerForm" method="post">
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" name="first_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" name="last_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" name="age" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    Registrarme
+                </button>
+            </form>
+            <div class="text-center mt-3">
+                    <a href="/api/sessions/viewlogin">¿Ya posee una cuenta? Inicie Sesion</a>
+            </div>
     </div>
 </div>

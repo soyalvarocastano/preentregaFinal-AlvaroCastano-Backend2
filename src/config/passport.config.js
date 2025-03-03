@@ -5,21 +5,20 @@ import jwt from 'passport-jwt'
 import { validatePassword, createHash } from "../utils/bcrypt.js";
 import userModel from "../models/user.js";
 
-const localStrategy = local.Strategy //Defino la estrategia local
+const localStrategy = local.Strategy 
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 
 const cookieExtractor = (req) =>{
     let token = null
     if(req && req.cookies) {
-        token = req.cookies['coderCookie'] //COnsulto solamente por las cookies con este nombre
+        token = req.cookies['coderCookie'] 
         console.log(req.cookies);
     }
     
     return token
 }
 
-//Middleware para errores de passport
 export const passportCall = (strategy) => {
     return async(req,res,next) => {
         
@@ -45,7 +44,6 @@ const initalizatePassport = () => {
 
             const findUser = await userModel.findOne({email: email})
             
-            //Si usuario existe
             if(!findUser) {
                 const user = await userModel.create({
                     first_name : first_name,
@@ -54,9 +52,9 @@ const initalizatePassport = () => {
                     password: createHash(password),
                     age: age
                 })
-                return done(null, user) //Doy aviso de que genere un nuevo usuario
+                return done(null, user) 
             } else {
-                return done(null, false) //No devuelvo error pero no genero un nuevo usuario
+                return done(null, false) 
             }
     
         }catch (e) {
